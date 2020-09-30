@@ -3,7 +3,7 @@ import 'reflect-metadata';
 import express, { Request, Response, NextFunction } from 'express';
 import 'express-async-errors';
 
-import AppError from './errros/AppError';
+import AppError from './erros/AppError';
 import routes from './routes';
 
 import './database';

@@ -15,6 +15,8 @@ usersRouter.post('/', async (request, response) => {
     password,
   });
 
+  delete newUser.password;
+
   return response.json(newUser);
 });
 

@@ -1,8 +1,9 @@
 import { getRepository } from 'typeorm';
+import { hash } from 'bcryptjs';
 
 import User from '../models/User';
 
-import AppError from '../errros/AppError';
+import AppError from '../erros/AppError';
 
 interface RequestDTO {
   username: string;
@@ -21,19 +22,21 @@ class CreateUserService {
     const existingUsername = await usersRepo.findOne({ where: { username } });
 
     if (existingUsername) {
-      throw new AppError('Username already exists.');
+      throw new AppError('Username already exists.', 400);
     }
 
     const existingEmail = await usersRepo.findOne({ where: { email } });
 
     if (existingEmail) {
-      throw new AppError('Email already exists.');
+      throw new AppError('Email already exists.', 400);
     }
+
+    const hashedPassword = await hash(password, 8);
 
     const newUser = usersRepo.create({
       username,
       email,
-      password,
+      password: hashedPassword,
     });
 
     await usersRepo.save(newUser);
