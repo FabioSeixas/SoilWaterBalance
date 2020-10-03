@@ -1,35 +1,34 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-export default class CreateSoilDataTable1601479987913
+export default class CreateProjectTable1601729484999
   implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'soil_data',
+        name: 'projects',
         columns: [
+          {
+            name: 'id',
+            type: 'uuid',
+            isPrimary: true,
+            generationStrategy: 'uuid',
+            default: 'uuid_generate_v4()',
+          },
+          {
+            name: 'title',
+            type: 'varchar',
+          },
+          {
+            name: 'author_id',
+            type: 'uuid',
+          },
           {
             name: 'soil_id',
             type: 'uuid',
           },
           {
-            name: 'start_depth',
-            type: 'integer',
-          },
-          {
-            name: 'end_depth',
-            type: 'integer',
-          },
-          {
-            name: 'field_cap',
-            type: 'decimal',
-          },
-          {
-            name: 'wilt_point',
-            type: 'decimal',
-          },
-          {
-            name: 'saturation',
-            type: 'decimal',
+            name: 'weather_id',
+            type: 'uuid',
           },
         ],
       }),
@@ -37,6 +36,6 @@ export default class CreateSoilDataTable1601479987913
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('soil_data');
+    await queryRunner.dropTable('projects');
   }
 }
