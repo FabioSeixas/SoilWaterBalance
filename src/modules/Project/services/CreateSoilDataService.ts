@@ -1,7 +1,7 @@
 import { getRepository } from 'typeorm';
-import AppError from '../erros/AppError';
-import SoilData from '../models/SoilData';
-import Soil from '../models/Soil';
+import AppError from '@shared/errors/AppError';
+import SoilData from '@modules/Project/infra/typeorm/entities/SoilData';
+import Soil from '@modules/Project/infra/typeorm/entities/Soil';
 
 interface SoilDataDTO {
   soil_id: string;

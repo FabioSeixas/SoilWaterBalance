@@ -1,6 +1,6 @@
 import { Entity, Column, ManyToOne, JoinColumn, PrimaryColumn } from 'typeorm';
 
-import Soil from './Soil';
+import Soil from '@modules/Project/infra/typeorm/entities/Soil';
 
 @Entity('soil_data')
 class SoilData {

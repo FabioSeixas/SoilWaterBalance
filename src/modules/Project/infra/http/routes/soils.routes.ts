@@ -1,10 +1,10 @@
 import { Router } from 'express';
 import { getRepository } from 'typeorm';
 
-import Soil from '../models/Soil';
-import ensureAnthenticated from '../middlewares/ensureAnthenticated';
-import CreateSoilService from '../services/CreateSoilService';
-import CreateSoilDataService from '../services/CreateSoilDataService';
+import Soil from '@modules/Project/infra/typeorm/entities/Soil';
+import ensureAnthenticated from '@modules/User/infra/http/middlewares/ensureAnthenticated';
+import CreateSoilService from '@modules/Project/services/CreateSoilService';
+import CreateSoilDataService from '@modules/Project/services/CreateSoilDataService';
 
 interface SoilDataDTO {
   soil_id: string;

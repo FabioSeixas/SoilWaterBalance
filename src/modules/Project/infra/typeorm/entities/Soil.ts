@@ -7,8 +7,8 @@ import {
   JoinColumn,
 } from 'typeorm';
 
-import User from './User';
-import Project from './Project';
+import User from '@modules/User/infra/typeorm/entities/User';
+import Project from '@modules/Project/infra/typeorm/entities/Project';
 
 @Entity('soils')
 class Soil {

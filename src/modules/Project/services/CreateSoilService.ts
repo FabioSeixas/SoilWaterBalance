@@ -1,6 +1,6 @@
 import { getRepository } from 'typeorm';
-import AppError from '../erros/AppError';
-import Soil from '../models/Soil';
+import AppError from '@shared/errors/AppError';
+import Soil from '@modules/Project/infra/typeorm/entities/Soil';
 
 interface RequestDTO {
   id: string;

@@ -7,7 +7,7 @@ import {
   OneToMany,
 } from 'typeorm';
 
-import Project from './Project';
+import Project from '@modules/Project/infra/typeorm/entities/Project';
 
 @Entity('users')
 class User {
