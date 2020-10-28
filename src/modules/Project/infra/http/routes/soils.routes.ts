@@ -1,13 +1,12 @@
 import { Router } from 'express';
 import { getRepository } from 'typeorm';
+import { container } from 'tsyringe';
 
 import Soil from '@modules/Project/infra/typeorm/entities/Soil';
 import ensureAnthenticated from '@modules/User/infra/http/middlewares/ensureAnthenticated';
 import CreateSoilService from '@modules/Project/services/CreateSoilService';
 import CreateSoilDataService from '@modules/Project/services/CreateSoilDataService';
 import ICreateSoilDataDTO from '@modules/Project/dtos/ICreateSoilDataDTO';
-import SoilsRepository from '../../typeorm/repositories/SoilsRepository';
-import SoilsDataRepository from '../../typeorm/repositories/SoilsDataRepository';
 
 const soilsRouter = Router();
 
@@ -25,9 +24,7 @@ soilsRouter.post('/', async (request, response) => {
   const { id: author_id } = request.user;
   const { name, text_class, total_depth } = request.body;
 
-  const soilsRepository = new SoilsRepository();
-
-  const createSoil = new CreateSoilService(soilsRepository);
+  const createSoil = container.resolve(CreateSoilService);
 
   const newSoil = await createSoil.execute({
     author_id,
@@ -50,13 +47,7 @@ soilsRouter.post('/:soil_id', async (request, response) => {
     },
   );
 
-  const soilsRepository = new SoilsRepository();
-  const soilsDataRepository = new SoilsDataRepository();
-
-  const createSoilData = new CreateSoilDataService(
-    soilsRepository,
-    soilsDataRepository,
-  );
+  const createSoilData = container.resolve(CreateSoilDataService);
 
   const newSoilData = await createSoilData.execute(soilDataArray);
 

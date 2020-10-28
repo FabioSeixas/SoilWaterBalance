@@ -1,4 +1,5 @@
 import { hash } from 'bcryptjs';
+import { inject, injectable } from 'tsyringe';
 
 import UsersRepository from '@modules/User/infra/typeorm/repositories/UsersRepository';
 
@@ -12,8 +13,12 @@ interface RequestDTO {
   password: string;
 }
 
+@injectable()
 class CreateUserService {
-  constructor(private usersRepository: UsersRepository) {}
+  constructor(
+    @inject('UsersRepository')
+    private usersRepository: UsersRepository,
+  ) {}
 
   public async execute({
     username,

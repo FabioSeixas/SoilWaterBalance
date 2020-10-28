@@ -1,11 +1,17 @@
+import { inject, injectable } from 'tsyringe';
+
 import AppError from '@shared/errors/AppError';
 import Soil from '@modules/Project/infra/typeorm/entities/Soil';
 import SoilsRepository from '@modules/Project/infra/typeorm/repositories/SoilsRepository';
 
 import ICreateSoilDTO from '@modules/Project/dtos/ICreateSoilDTO';
 
+@injectable()
 class CreateSoilService {
-  constructor(private soilsRepository: SoilsRepository) {}
+  constructor(
+    @inject('SoilsRepository')
+    private soilsRepository: SoilsRepository,
+  ) {}
 
   public async execute({
     author_id,

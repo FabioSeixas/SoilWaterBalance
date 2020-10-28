@@ -1,5 +1,6 @@
 import { compare } from 'bcryptjs';
 import { sign } from 'jsonwebtoken';
+import { inject, injectable } from 'tsyringe';
 
 import UsersRepository from '@modules/User/infra/typeorm/repositories/UsersRepository';
 import AppError from '@shared/errors/AppError';
@@ -16,8 +17,12 @@ interface AuthResponse {
   token: string;
 }
 
+@injectable()
 class AuthenticateUserService {
-  constructor(private usersRepository: UsersRepository) {}
+  constructor(
+    @inject('UsersRepository')
+    private usersRepository: UsersRepository,
+  ) {}
 
   public async execute({ email, password }: RequestDTO): Promise<AuthResponse> {
     const user = await this.usersRepository.findByEmail(email);
