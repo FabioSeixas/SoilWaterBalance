@@ -1,25 +1,19 @@
-import { getRepository } from 'typeorm';
 import AppError from '@shared/errors/AppError';
 import SoilData from '@modules/Project/infra/typeorm/entities/SoilData';
-import Soil from '@modules/Project/infra/typeorm/entities/Soil';
-
-interface SoilDataDTO {
-  soil_id: string;
-  start_depth: number;
-  end_depth: number;
-  field_cap: number;
-  wilt_point: number;
-  saturation: number;
-}
+import SoilsRepository from '@modules/Project/infra/typeorm/repositories/SoilsRepository';
+import SoilsDataRepository from '@modules/Project/infra/typeorm/repositories/SoilsDataRepository';
+import ICreateSoilDataDTO from '@modules/Project/dtos/ICreateSoilDataDTO';
 
 class CreateSoilDataService {
-  public async execute(soilDataArray: SoilDataDTO[]): Promise<SoilDataDTO[]> {
-    const soilDataRepo = getRepository(SoilData);
-    const soilRepo = getRepository(Soil);
+  constructor(
+    private soilsRepository: SoilsRepository,
+    private soilsDataRepository: SoilsDataRepository,
+  ) {}
 
-    const soil = await soilRepo.findOne({
-      where: { id: soilDataArray[0].soil_id },
-    });
+  public async execute(
+    soilDataArray: ICreateSoilDataDTO[],
+  ): Promise<ICreateSoilDataDTO[]> {
+    const soil = await this.soilsRepository.findById(soilDataArray[0].soil_id);
 
     if (!soil) {
       throw new AppError('Soil Id not found.', 400);
@@ -29,8 +23,9 @@ class CreateSoilDataService {
       dataByDepth.soil = soil;
       return dataByDepth as SoilData;
     });
-    const createdSoilDataArray = soilDataRepo.create(
-      readySoilDataArray.map((dataByDepth: SoilData) => ({
+
+    const createdSoilDataArray = this.soilsDataRepository.create(
+      readySoilDataArray.map((dataByDepth: ICreateSoilDataDTO) => ({
         soil_id: dataByDepth.soil_id,
         saturation: dataByDepth.saturation,
         wilt_point: dataByDepth.wilt_point,
@@ -40,8 +35,6 @@ class CreateSoilDataService {
         soil: dataByDepth.soil,
       })),
     );
-
-    await soilDataRepo.save(createdSoilDataArray);
 
     return createdSoilDataArray;
   }

@@ -1,24 +1,19 @@
-import { getRepository } from 'typeorm';
 import AppError from '@shared/errors/AppError';
 import Soil from '@modules/Project/infra/typeorm/entities/Soil';
+import SoilsRepository from '@modules/Project/infra/typeorm/repositories/SoilsRepository';
 
-interface RequestDTO {
-  id: string;
-  name: string;
-  text_class: string;
-  total_depth: number;
-}
+import ICreateSoilDTO from '@modules/Project/dtos/ICreateSoilDTO';
 
 class CreateSoilService {
+  constructor(private soilsRepository: SoilsRepository) {}
+
   public async execute({
-    id,
+    author_id,
     name,
     text_class,
     total_depth,
-  }: RequestDTO): Promise<Soil> {
-    const soilsRepo = getRepository(Soil);
-
-    const alreadyExistsName = await soilsRepo.findOne({ where: { name } });
+  }: ICreateSoilDTO): Promise<Soil> {
+    const alreadyExistsName = await this.soilsRepository.findByName(name);
 
     if (alreadyExistsName) {
       throw new AppError('Soil Name already exists.', 400);
@@ -31,14 +26,12 @@ class CreateSoilService {
       );
     }
 
-    const newSoil = soilsRepo.create({
-      author_id: id,
+    const newSoil = this.soilsRepository.create({
+      author_id,
       name,
       text_class,
       total_depth,
     });
-
-    await soilsRepo.save(newSoil);
 
     return newSoil;
   }
