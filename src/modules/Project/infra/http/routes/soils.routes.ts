@@ -1,57 +1,21 @@
 import { Router } from 'express';
-import { getRepository } from 'typeorm';
-import { container } from 'tsyringe';
 
-import Soil from '@modules/Project/infra/typeorm/entities/Soil';
 import ensureAnthenticated from '@modules/User/infra/http/middlewares/ensureAnthenticated';
-import CreateSoilService from '@modules/Project/services/CreateSoilService';
-import CreateSoilDataService from '@modules/Project/services/CreateSoilDataService';
-import ICreateSoilDataDTO from '@modules/Project/dtos/ICreateSoilDataDTO';
+
+import SoilsController from '@modules/Project/infra/http/controllers/SoilsController';
+import SoilsDataController from '@modules/Project/infra/http/controllers/SoilsDataController';
 
 const soilsRouter = Router();
 
+const soilsController = new SoilsController();
+const soilsDataController = new SoilsDataController();
+
 soilsRouter.use(ensureAnthenticated);
 
-soilsRouter.get('/', async (request, response) => {
-  const soilsRepo = getRepository(Soil);
+soilsRouter.get('/', soilsController.show);
 
-  const soils = await soilsRepo.find();
+soilsRouter.post('/', soilsController.create);
 
-  response.json(soils);
-});
-
-soilsRouter.post('/', async (request, response) => {
-  const { id: author_id } = request.user;
-  const { name, text_class, total_depth } = request.body;
-
-  const createSoil = container.resolve(CreateSoilService);
-
-  const newSoil = await createSoil.execute({
-    author_id,
-    name,
-    text_class,
-    total_depth,
-  });
-
-  return response.json(newSoil);
-});
-
-soilsRouter.post('/:soil_id', async (request, response) => {
-  const { soil_id } = request.params;
-  const reqBody = request.body;
-
-  const soilDataArray: ICreateSoilDataDTO[] = reqBody.map(
-    (dataByDepth: ICreateSoilDataDTO) => {
-      dataByDepth.soil_id = soil_id;
-      return dataByDepth;
-    },
-  );
-
-  const createSoilData = container.resolve(CreateSoilDataService);
-
-  const newSoilData = await createSoilData.execute(soilDataArray);
-
-  return response.json(newSoilData);
-});
+soilsRouter.post('/:soil_id', soilsDataController.create);
 
 export default soilsRouter;
