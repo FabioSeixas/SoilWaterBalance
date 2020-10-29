@@ -2,18 +2,18 @@ import { inject, injectable } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
 import SoilData from '@modules/Project/infra/typeorm/entities/SoilData';
-import SoilsRepository from '@modules/Project/infra/typeorm/repositories/SoilsRepository';
-import SoilsDataRepository from '@modules/Project/infra/typeorm/repositories/SoilsDataRepository';
+import ISoilsRepository from '@modules/Project/repositories/ISoilsRepository';
+import ISoilsDataRepository from '@modules/Project/repositories/ISoilsDataRepository';
 import ICreateSoilDataDTO from '@modules/Project/dtos/ICreateSoilDataDTO';
 
 @injectable()
 class CreateSoilDataService {
   constructor(
     @inject('SoilsRepository')
-    private soilsRepository: SoilsRepository,
+    private soilsRepository: ISoilsRepository,
 
     @inject('SoilsDataRepository')
-    private soilsDataRepository: SoilsDataRepository,
+    private soilsDataRepository: ISoilsDataRepository,
   ) {}
 
   public async execute(

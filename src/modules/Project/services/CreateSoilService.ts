@@ -2,7 +2,7 @@ import { inject, injectable } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
 import Soil from '@modules/Project/infra/typeorm/entities/Soil';
-import SoilsRepository from '@modules/Project/infra/typeorm/repositories/SoilsRepository';
+import ISoilsRepository from '@modules/Project/repositories/ISoilsRepository';
 
 import ICreateSoilDTO from '@modules/Project/dtos/ICreateSoilDTO';
 
@@ -10,7 +10,7 @@ import ICreateSoilDTO from '@modules/Project/dtos/ICreateSoilDTO';
 class CreateSoilService {
   constructor(
     @inject('SoilsRepository')
-    private soilsRepository: SoilsRepository,
+    private soilsRepository: ISoilsRepository,
   ) {}
 
   public async execute({
