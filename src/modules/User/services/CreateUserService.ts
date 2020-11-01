@@ -1,9 +1,10 @@
-import { hash } from 'bcryptjs';
 import { inject, injectable } from 'tsyringe';
 
 import IUsersRepository from '@modules/User/repositories/IUsersRepository';
 
 import User from '@modules/User/infra/typeorm/entities/User';
+
+import IHashProvider from '@modules/User/providers/models/IHashProvider';
 
 import AppError from '@shared/errors/AppError';
 
@@ -18,6 +19,9 @@ class CreateUserService {
   constructor(
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
+
+    @inject('HashProvider')
+    private hashProvider: IHashProvider,
   ) {}
 
   public async execute({
@@ -37,7 +41,7 @@ class CreateUserService {
       throw new AppError('Email already exists.', 400);
     }
 
-    const hashedPassword = await hash(password, 8);
+    const hashedPassword = await this.hashProvider.createHash(password);
 
     const newUser = this.usersRepository.create({
       username,
