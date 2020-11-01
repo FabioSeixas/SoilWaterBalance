@@ -18,7 +18,7 @@ class CreateSoilDataService {
 
   public async execute(
     soilDataArray: ICreateSoilDataDTO[],
-  ): Promise<ICreateSoilDataDTO[]> {
+  ): Promise<SoilData[]> {
     const soil = await this.soilsRepository.findById(soilDataArray[0].soil_id);
 
     if (!soil) {
