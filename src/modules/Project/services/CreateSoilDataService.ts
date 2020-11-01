@@ -26,12 +26,12 @@ class CreateSoilDataService {
     }
 
     const readySoilDataArray: SoilData[] = soilDataArray.map(dataByDepth => {
-      dataByDepth.soil = soil;
+      Object.assign(dataByDepth, { soil });
       return dataByDepth as SoilData;
     });
 
     const createdSoilDataArray = this.soilsDataRepository.create(
-      readySoilDataArray.map((dataByDepth: ICreateSoilDataDTO) => ({
+      readySoilDataArray.map((dataByDepth: SoilData) => ({
         soil_id: dataByDepth.soil_id,
         saturation: dataByDepth.saturation,
         wilt_point: dataByDepth.wilt_point,
