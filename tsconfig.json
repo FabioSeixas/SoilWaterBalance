@@ -13,9 +13,8 @@
       "@config/*": ["config/*"]
     },
     "esModuleInterop": true,
-  "experimentalDecorators": true,
+    "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true
