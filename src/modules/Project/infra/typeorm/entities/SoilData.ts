@@ -1,16 +1,25 @@
-import { Entity, Column, ManyToOne, JoinColumn, PrimaryColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  ManyToOne,
+  JoinColumn,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 import Soil from '@modules/Project/infra/typeorm/entities/Soil';
 
 @Entity('soil_data')
 class SoilData {
-  @PrimaryColumn('uuid')
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+
+  @Column('uuid')
   soil_id: string;
 
-  @PrimaryColumn('integer')
+  @Column('integer')
   start_depth: number;
 
-  @PrimaryColumn('integer')
+  @Column('integer')
   end_depth: number;
 
   @Column('decimal')

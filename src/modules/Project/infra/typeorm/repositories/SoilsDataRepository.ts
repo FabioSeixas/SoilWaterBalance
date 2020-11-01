@@ -10,8 +10,8 @@ class SoilsDataRepository implements ISoilsDataRepository {
     this.ormRepository = getRepository(SoilData);
   }
 
-  public async findById(id: string): Promise<SoilData[] | undefined> {
-    const soilData = await this.ormRepository.find({ where: { id } });
+  public async findBySoilId(soil_id: string): Promise<SoilData[] | undefined> {
+    const soilData = await this.ormRepository.find({ where: { soil_id } });
 
     return soilData;
   }
