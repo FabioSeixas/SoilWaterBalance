@@ -3,9 +3,9 @@ import 'reflect-metadata';
 import AppError from '@shared/errors/AppError';
 import AuthenticateUserService from '@modules/User/services/AuthenticateUserService';
 import FakeUserRepository from '@modules/User/repositories/fakes/FakeUsersRepository';
-import FakeHashProvider from '@modules/User/providers/fakes/FakeHashProvider';
+import FakeHashProvider from '@modules/User/providers/HashProvider/fakes/FakeHashProvider';
 
-describe('CreateUser', () => {
+describe('AuthenticateUser', () => {
   it('should authenticate an user', async () => {
     const fakeUserRepository = new FakeUserRepository();
     const fakeHashProvider = new FakeHashProvider();

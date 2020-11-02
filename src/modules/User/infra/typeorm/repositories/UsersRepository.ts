@@ -21,6 +21,11 @@ class UsersRepository implements IUsersRepository {
     return user;
   }
 
+  public async findById(user_id: string): Promise<User | undefined> {
+    const user = await this.ormRepository.findOne({ where: { id: user_id } });
+    return user;
+  }
+
   public async create({
     email,
     username,
@@ -31,6 +36,12 @@ class UsersRepository implements IUsersRepository {
     await this.ormRepository.save(newUser);
 
     return newUser;
+  }
+
+  public async save(user: User): Promise<User> {
+    await this.ormRepository.save(user);
+
+    return user;
   }
 }
 

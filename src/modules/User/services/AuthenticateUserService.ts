@@ -5,7 +5,7 @@ import IUsersRepository from '@modules/User/repositories/IUsersRepository';
 import AppError from '@shared/errors/AppError';
 import User from '@modules/User/infra/typeorm/entities/User';
 import authConfig from '@config/auth';
-import IHashProvider from '@modules/User/providers/models/IHashProvider';
+import IHashProvider from '@modules/User/providers/HashProvider/models/IHashProvider';
 
 interface RequestDTO {
   email: string;

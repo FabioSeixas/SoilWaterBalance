@@ -4,10 +4,8 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  OneToMany,
+  Generated,
 } from 'typeorm';
-
-import Project from '@modules/Project/infra/typeorm/entities/Project';
 
 @Entity('users')
 class User {
@@ -15,25 +13,17 @@ class User {
   id: string;
 
   @Column()
-  username: string;
+  @Generated('uuid')
+  token: string;
 
   @Column()
-  email: string;
-
-  @Column()
-  password: string;
-
-  @Column()
-  avatar: string;
+  user_id: string;
 
   @CreateDateColumn()
   created_at: Date;
 
   @UpdateDateColumn()
   updated_at: Date;
-
-  @OneToMany(() => Project, project => project.author)
-  project: Project;
 }
 
 export default User;

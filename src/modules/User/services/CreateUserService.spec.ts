@@ -2,7 +2,7 @@ import 'reflect-metadata';
 
 import CreateUserService from '@modules/User/services/CreateUserService';
 import FakeUserRepository from '@modules/User/repositories/fakes/FakeUsersRepository';
-import FakeHashProvider from '@modules/User/providers/fakes/FakeHashProvider';
+import FakeHashProvider from '@modules/User/providers/HashProvider/fakes/FakeHashProvider';
 import AppError from '@shared/errors/AppError';
 
 describe('CreateUser', () => {
