@@ -1,11 +1,18 @@
 import nodemailer, { Transporter } from 'nodemailer';
+import { inject, injectable } from 'tsyringe';
 
 import IMailProvider from '@shared/container/providers/MailProvider/models/IMailProvider';
+import ISendMailDTO from '@shared/container/providers/MailProvider/dtos/ISendMailDTO';
+import ITemplateMailProvider from '../../TemplateMailProvider/models/ITemplateMailProvider';
 
+@injectable()
 export default class EtherealMailProvider implements IMailProvider {
   private client: Transporter;
 
-  constructor() {
+  constructor(
+    @inject('TemplateMailProvider')
+    private templateMailProvider: ITemplateMailProvider,
+  ) {
     nodemailer.createTestAccount().then(account => {
       const transporter = nodemailer.createTransport({
         host: account.smtp.host,
@@ -21,12 +28,23 @@ export default class EtherealMailProvider implements IMailProvider {
     });
   }
 
-  public async sendMail(to: string, body: string): Promise<void> {
+  public async sendMail({
+    subject,
+    to,
+    templateData,
+    from,
+  }: ISendMailDTO): Promise<void> {
     const message = await this.client.sendMail({
-      from: 'Sender Name <sender@example.com>',
-      to,
-      subject: 'Nodemailer is unicode friendly ✔',
-      text: body,
+      from: {
+        name: from?.name || 'Equipe da Soil Water Balance',
+        address: from?.email || 'equipe@soilwaterbalance.com',
+      },
+      to: {
+        name: to.name,
+        address: to.email,
+      },
+      subject,
+      html: await this.templateMailProvider.parse(templateData),
     });
 
     console.log('Message sent: %s', message.messageId);

@@ -6,12 +6,20 @@ import DiskStorageProvider from '@shared/container/providers/StorageProvider/imp
 import IMailProvider from '@shared/container/providers/MailProvider/models/IMailProvider';
 import EtherealMailProvider from '@shared/container/providers/MailProvider/implementations/EtherealMailProvider';
 
+import ITemplateMailProvider from '@shared/container/providers/TemplateMailProvider/models/ITemplateMailProvider';
+import HandlebarsTemplateMailProvider from '@shared/container/providers/TemplateMailProvider/implementations/HandlebarsTemplateMailProvider';
+
 container.registerSingleton<IStorageProvider>(
   'UsersRepository',
   DiskStorageProvider,
 );
 
+container.registerSingleton<ITemplateMailProvider>(
+  'TemplateMailProvider',
+  HandlebarsTemplateMailProvider,
+);
+
 container.registerInstance<IMailProvider>(
   'MailProvider',
-  new EtherealMailProvider(),
+  container.resolve(EtherealMailProvider),
 );
