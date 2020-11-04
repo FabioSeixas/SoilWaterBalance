@@ -1,27 +1,15 @@
 import { Router } from 'express';
-import { container } from 'tsyringe';
 
-import UpdateProfileService from '@modules/User/services/UpdateProfileService';
+import ProfileController from '@modules/User/infra/http/controllers/ProfileController';
+
+import ensureAuthenticated from '@modules/User/infra/http/middlewares/ensureAnthenticated';
 
 const profileRouter = Router();
 
-profileRouter.put('/', async (request, response) => {
-  const user_id = request.user.id;
-  const { email, password, username, old_password } = request.body;
+profileRouter.use(ensureAuthenticated);
 
-  const updateProfile = container.resolve(UpdateProfileService);
+const profileController = new ProfileController();
 
-  const user = await updateProfile.execute({
-    user_id,
-    email,
-    password,
-    username,
-    old_password,
-  });
-
-  delete user.password;
-
-  return response.json(user);
-});
+profileRouter.put('/update', profileController.update);
 
 export default profileRouter;
