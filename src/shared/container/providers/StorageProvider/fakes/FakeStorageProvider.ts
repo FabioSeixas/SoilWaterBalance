@@ -9,11 +9,9 @@ export default class FakeStorageProvider implements IStorageProvider {
     return file;
   }
 
-  public async deleteFile(file: string): Promise<string> {
+  public async deleteFile(file: string): Promise<void> {
     const fileIndex = this.storage.findIndex(item => item === file);
 
     this.storage.splice(fileIndex, 1);
-
-    return file;
   }
 }

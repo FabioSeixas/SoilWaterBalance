@@ -5,16 +5,22 @@ import AuthenticateUserService from '@modules/User/services/AuthenticateUserServ
 import FakeUserRepository from '@modules/User/repositories/fakes/FakeUsersRepository';
 import FakeHashProvider from '@modules/User/providers/HashProvider/fakes/FakeHashProvider';
 
-describe('AuthenticateUser', () => {
-  it('should authenticate an user', async () => {
-    const fakeUserRepository = new FakeUserRepository();
-    const fakeHashProvider = new FakeHashProvider();
+let fakeUserRepository: FakeUserRepository;
+let fakeHashProvider: FakeHashProvider;
+let authenticateUser: AuthenticateUserService;
 
-    const authenticateUser = new AuthenticateUserService(
+describe('AuthenticateUser', () => {
+  beforeEach(() => {
+    fakeUserRepository = new FakeUserRepository();
+    fakeHashProvider = new FakeHashProvider();
+
+    authenticateUser = new AuthenticateUserService(
       fakeUserRepository,
       fakeHashProvider,
     );
+  });
 
+  it('should authenticate an user', async () => {
     const newUserData = {
       username: 'TestName',
       email: 'emailtest@gmail.com',
@@ -32,14 +38,6 @@ describe('AuthenticateUser', () => {
   });
 
   it('should not be able to authenticate with an wrong email', async () => {
-    const fakeUserRepository = new FakeUserRepository();
-    const fakeHashProvider = new FakeHashProvider();
-
-    const authenticateUser = new AuthenticateUserService(
-      fakeUserRepository,
-      fakeHashProvider,
-    );
-
     const newUserData = {
       username: 'TestName',
       email: 'emailtest@gmail.com',
@@ -57,14 +55,6 @@ describe('AuthenticateUser', () => {
   });
 
   it('should not be able to authenticate with an wrong password', async () => {
-    const fakeUserRepository = new FakeUserRepository();
-    const fakeHashProvider = new FakeHashProvider();
-
-    const authenticateUser = new AuthenticateUserService(
-      fakeUserRepository,
-      fakeHashProvider,
-    );
-
     const newUserData = {
       username: 'TestName',
       email: 'emailtest@gmail.com',

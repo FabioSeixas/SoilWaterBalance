@@ -3,11 +3,16 @@ import AppError from '@shared/errors/AppError';
 import FakeSoilsRepository from '@modules/Project/repositories/fakes/FakeSoilsRepository';
 import CreateSoilService from '@modules/Project/services/CreateSoilService';
 
-describe('CreateNewSoil', () => {
-  it('should create a new Soil', async () => {
-    const fakeSoilRepository = new FakeSoilsRepository();
-    const createSoilService = new CreateSoilService(fakeSoilRepository);
+let fakeSoilRepository: FakeSoilsRepository;
+let createSoilService: CreateSoilService;
 
+describe('CreateNewSoil', () => {
+  beforeEach(() => {
+    fakeSoilRepository = new FakeSoilsRepository();
+    createSoilService = new CreateSoilService(fakeSoilRepository);
+  });
+
+  it('should create a new Soil', async () => {
     const data = {
       name: 'NovoSoloTeste',
       text_class: 'argiloso',
@@ -22,9 +27,6 @@ describe('CreateNewSoil', () => {
   });
 
   it('should not be able to create a new Soil with a name that already exists', async () => {
-    const fakeSoilRepository = new FakeSoilsRepository();
-    const createSoilService = new CreateSoilService(fakeSoilRepository);
-
     await createSoilService.execute({
       name: 'NovoSoloTeste',
       text_class: 'argiloso',
@@ -43,9 +45,6 @@ describe('CreateNewSoil', () => {
   });
 
   it('should not be able to create a new Soil with total depth higher than 500 cm', async () => {
-    const fakeSoilRepository = new FakeSoilsRepository();
-    const createSoilService = new CreateSoilService(fakeSoilRepository);
-
     expect(
       createSoilService.execute({
         name: 'NovoSoloTeste',

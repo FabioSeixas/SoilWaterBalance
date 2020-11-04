@@ -5,16 +5,19 @@ import FakeUserRepository from '@modules/User/repositories/fakes/FakeUsersReposi
 import FakeHashProvider from '@modules/User/providers/HashProvider/fakes/FakeHashProvider';
 import AppError from '@shared/errors/AppError';
 
+let fakeUserRepository: FakeUserRepository;
+let fakeHashProvider: FakeHashProvider;
+let createUser: CreateUserService;
+
 describe('CreateUser', () => {
+  beforeEach(() => {
+    fakeUserRepository = new FakeUserRepository();
+    fakeHashProvider = new FakeHashProvider();
+
+    createUser = new CreateUserService(fakeUserRepository, fakeHashProvider);
+  });
+
   it('should create a new user', async () => {
-    const fakeUserRepository = new FakeUserRepository();
-    const fakeHashProvider = new FakeHashProvider();
-
-    const createUser = new CreateUserService(
-      fakeUserRepository,
-      fakeHashProvider,
-    );
-
     const newUserData = {
       username: 'TestName',
       email: 'emailtest@gmail.com',
@@ -27,14 +30,6 @@ describe('CreateUser', () => {
   });
 
   it('should not create an user with an existing username', async () => {
-    const fakeUserRepository = new FakeUserRepository();
-    const fakeHashProvider = new FakeHashProvider();
-
-    const createUser = new CreateUserService(
-      fakeUserRepository,
-      fakeHashProvider,
-    );
-
     await createUser.execute({
       username: 'TestName',
       email: 'emailtest@gmail.com',
@@ -51,14 +46,6 @@ describe('CreateUser', () => {
   });
 
   it('should not create an user with an existing email', async () => {
-    const fakeUserRepository = new FakeUserRepository();
-    const fakeHashProvider = new FakeHashProvider();
-
-    const createUser = new CreateUserService(
-      fakeUserRepository,
-      fakeHashProvider,
-    );
-
     await createUser.execute({
       username: 'TestName',
       email: 'emailtest@gmail.com',
