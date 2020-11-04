@@ -12,6 +12,9 @@ import SoilsRepository from '@modules/Project/infra/typeorm/repositories/SoilsRe
 import ISoilsDataRepository from '@modules/Project/repositories/ISoilsDataRepository';
 import SoilsDataRepository from '@modules/Project/infra/typeorm/repositories/SoilsDataRepository';
 
+import IUserTokensRepository from '@modules/User/repositories/IUserTokensRepository';
+import UserTokensRepository from '@modules/User/infra/typeorm/repositories/UserTokensRepository';
+
 container.registerSingleton<IUsersRepository>(
   'UsersRepository',
   UsersRepository,
@@ -25,4 +28,9 @@ container.registerSingleton<ISoilsRepository>(
 container.registerSingleton<ISoilsDataRepository>(
   'SoilsDataRepository',
   SoilsDataRepository,
+);
+
+container.registerSingleton<IUserTokensRepository>(
+  'UserTokensRepository',
+  UserTokensRepository,
 );
