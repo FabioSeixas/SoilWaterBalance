@@ -10,6 +10,7 @@ profileRouter.use(ensureAuthenticated);
 
 const profileController = new ProfileController();
 
+profileRouter.get('/show', profileController.show);
 profileRouter.put('/update', profileController.update);
 
 export default profileRouter;
